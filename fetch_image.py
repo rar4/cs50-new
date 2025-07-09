@@ -1,12 +1,13 @@
 from pexels_api import API
 
 
-KEY = ""
+key = ""
+
 
 with open("pexesl.txt") as f:
-    KEY = f.readline()
+    key = f.readline()
 
-api = API(KEY)
+api = API(key)
 
 def fetch_image(query: str) -> str:
 
