@@ -1,17 +1,20 @@
 from flask import Flask, render_template, request, session, redirect
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash
 
 
 from markdown import markdown
 from datetime import datetime
 
 from generation import generate_idea
-from utils import login_required, enter, db_exec, error
+from random import randint
+from utils import login_required, enter, db_exec, error, send_confirmation_email
 from fetch_image import fetch_image
 
 app = Flask(__name__)
 
 app.secret_key = "FooBarBaz"
+
+
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -59,6 +62,26 @@ def login():
             return redirect("/")
         else:
             return error("Wrong username or password")
+
+@app.route("/reset", methods=["GET", "POST"])
+def reset():
+    if request.method == "GET" and not session.args.get("code"):
+        session["code"] = randint(100000, 999999)
+        return render_template("reset.html")
+    elif request.method == "GET":
+        session["email"] = request.args.get("email")
+        send_confirmation_email(request.args.get("email"), session.get("code"))
+        return render_template("reset-confirm.html")
+        
+    else:
+        if (request.args.get("code") == session.get("code")):
+            if passwd := request.args.get("password") == request.args.get("confirmation"):
+                hash = generate_password_hash(passwd)
+                db_exec("UPDATE User password_hash = ? WHERE username = ?" (hash, session.get("email")))
+
+        
+        
+        
 
 
 @app.route("/", methods=["GET"])

@@ -2,12 +2,20 @@ from functools import wraps
 from flask import redirect, render_template, session
 import sqlite3
 from werkzeug.security import check_password_hash
+from smtplib import SMTP 
 
-er_blank_form = "Error 400, \n fill all form"
-er_wrong_user = "Error 400, \n wrong username or password"
-er_diferent_passwd = "Error 400 \n passwords do not match"
-er_usname_taken = "Error 400 \n username is already taken"
 
+ADDRESS = "botnoreply55@gmail.com"
+
+PASSWORD = "SigmaGrind"
+
+
+def send_confirmation_email(reciver_address: str, message):
+    s = SMTP("smtp.gmail.com")
+    s.starttls()
+    s.login(ADDRESS, PASSWORD)
+    s.sendmail(ADDRESS, reciver_address, message)
+    s.quit()
 
 
 def error(message):
@@ -15,11 +23,7 @@ def error(message):
 
 
 def login_required(f):
-    """
-    Decorate routes to require login.
-
-    https://flask.palletsprojects.com/en/latest/patterns/viewdecorators/
-    """
+    
 
     @wraps(f)
     def decorated_function(*args, **kwargs):

@@ -4,7 +4,7 @@ from pexels_api import API
 key = ""
 
 
-with open("pexesl.txt") as f:
+with open("pexels.txt") as f:
     key = f.readline()
 
 api = API(key)
