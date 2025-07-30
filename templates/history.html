@@ -14,7 +14,7 @@
                     <tr>
                         <td>{{ i[0]|safe }}</td>
                         <td>{{ i[1]|safe }}</td>
-                        <td  onclick="document.location.assign(`/show-idea?session_id=${ {{ i[2] }} }`)">View Idea </td>
+                        <td style="cursor: pointer;" onclick="document.location.assign(`/show-idea?session_id=${ {{ i[2] }} }`)">View Idea </td>
                     </tr>
                 {% endfor %}
             </tbody>

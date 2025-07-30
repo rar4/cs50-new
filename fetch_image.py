@@ -1,11 +1,9 @@
 from pexels_api import API
 
 
-key = ""
-
 
 with open("pexels.txt") as f:
-    key = f.readline()
+    key = f.read()
 
 api = API(key)
 
